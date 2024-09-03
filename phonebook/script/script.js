@@ -44,7 +44,7 @@ const data = [
   };
 
   const createLogo = title => {
-    const h1 =document.createElement('h1');
+    const h1 = document.createElement('h1');
 
     h1.classList.add('logo');
     h1.textContent = `Телефонный справочник. ${title}`;
@@ -63,7 +63,7 @@ const data = [
   };
 
   const createButtonsGroup = params => {
-    const btnWrapper =document.createElement('div');
+    const btnWrapper = document.createElement('div');
 
     btnWrapper.classList.add('btn-wrapper');
 
@@ -120,11 +120,13 @@ const data = [
       </div>
       <div class="form-group">
         <label class="form-label" for="surname">Фамилия:</label>
-        <input class="form-input" name="surname" id="surname" type="text" required>
+        <input class="form-input" name="surname" id="surname" 
+          type="text" required>
       </div>
       <div class="form-group">
         <label class="form-label" for="phone">Телефон:</label>
-        <input class="form-input" name="phone" id="phone" type="number" required>
+        <input class="form-input" name="phone" id="phone" 
+          type="number" required>
       </div>
     `);
 
@@ -142,12 +144,31 @@ const data = [
     ]);
 
     form.append(...buttonGroup.btns);
-    overlay.append(form)
+    overlay.append(form);
 
     return {
       overlay,
       form,
     };
+  };
+
+  const createFooter = () => {
+    const footer = document.createElement('footer');
+    const footerContainer = createContainer();
+
+    footer.classList.add('footer');
+    footer.append(footerContainer);
+    footer.footerContainer = footerContainer;
+
+    return footer;
+  };
+
+  const createFooterText = title => {
+    const p = document.createElement('p');
+
+    p.insertAdjacentHTML('beforeend', `Все права защищены &copy;${title}`);
+
+    return p;
   };
 
 
@@ -169,11 +190,14 @@ const data = [
     ]);
     const table = createTable();
     const form = createForm();
+    const footer = createFooter();
+    const footerText = createFooterText(title);
 
 
     header.headerContainer.append(logo);
     main.mainContainer.append(buttonGroup.btnWrapper, table, form.overlay);
-    app.append(header, main);
+    footer.footerContainer.append(footerText);
+    app.append(header, main, footer);
 
     return {
       list: table.tbody,
@@ -200,7 +224,6 @@ const data = [
     tr.append(tdDel, tdName, tdSurname, tdPhone);
 
     return tr;
-
   };
 
   const renderContacts = (elem, data) => {
