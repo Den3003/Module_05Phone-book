@@ -16,6 +16,19 @@ body {
   text-transform: uppercase;
 }
 
+.create-number-icon {
+  color: #6E6893;
+  cursor: pointer;
+}
+
+.create-number-icon:hover, .create-number-icon:focus {
+  color: #6d5bd0;
+}
+
+.create-number-icon:active {
+  color: #4535a0;
+}
+
 @media (max-width: 720px) {
   .logo {
     font-size: 20px;
