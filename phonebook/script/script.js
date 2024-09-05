@@ -218,6 +218,7 @@ const data = [
     const tdPhone = document.createElement('td');
     const phoneLink = document.createElement('a');
     const tdModify = document.createElement('td');
+    const buttonModify = document.createElement('button');
 
     tdName.textContent = firstName;
     tdSurname.textContent = surname;
@@ -228,8 +229,8 @@ const data = [
     tdDel.classList.add('delete');
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
-    tdModify.insertAdjacentHTML('beforeend', `
-      <svg class="create-number-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    buttonModify.insertAdjacentHTML('beforeend', `
+      <svg class="modify-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15.5629 4.86078L17.6394 6.93629L15.5629 4.86078ZM16.8982 
           3.03233L11.2834 8.64709C10.9933 8.9368 10.7955 9.3059 10.7148 
           9.70789L10.1962 12.304L12.7923 11.7844C13.1942 11.704 13.5629 
@@ -253,6 +254,9 @@ const data = [
         />
       </svg>
     `);
+    buttonModify.setAttribute('type', 'button');
+    buttonModify.classList.add('modify');
+    tdModify.append(buttonModify);
     tr.append(tdDel, tdName, tdSurname, tdPhone, tdModify);
 
     return tr;

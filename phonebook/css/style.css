@@ -16,16 +16,22 @@ body {
   text-transform: uppercase;
 }
 
-.create-number-icon {
+.modify {
+  border: none;
+  outline: none;
+  font-size: 0;
+  line-height: 0;
+  padding: 0;
+  background-color: transparent;
   color: #6E6893;
   cursor: pointer;
 }
 
-.create-number-icon:hover, .create-number-icon:focus {
+.modify:hover, .modify:focus {
   color: #6d5bd0;
 }
 
-.create-number-icon:active {
+.modify:active {
   color: #4535a0;
 }
 
