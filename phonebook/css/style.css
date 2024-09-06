@@ -16,6 +16,11 @@ body {
   text-transform: uppercase;
 }
 
+.tHead-name, .tHead-surname {
+  width: max-content;
+  cursor: pointer;
+}
+
 .modify {
   border: none;
   outline: none;

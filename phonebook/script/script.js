@@ -92,16 +92,17 @@ const data = [
 
     table.classList.add('table', 'table-striped');
     thead.insertAdjacentHTML('beforeend', `
-      <tr>
-        <th class="delete">Удалить</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
+      <tr class="js-tHead-row">
+        <th class="delete th-delete">Удалить</th>
+        <th class="tHead-name js-tHead-name">Имя</th>
+        <th class="tHead-surname js-tHead-surname">Фамилия</th>
         <th>Телефон</th>
         <th></th>
       </tr>
     `);
     table.append(thead, tbody);
     table.tbody = tbody;
+    table.thead = thead;
 
     return table;
   };
@@ -207,6 +208,7 @@ const data = [
       btnDel: buttonGroup.btns[1],
       formOverlay: form.overlay,
       form: form.form,
+      tableHead: table.thead,
     };
   };
 
@@ -228,7 +230,7 @@ const data = [
     phoneLink.textContent = phone;
     tr.phoneLink = phoneLink;
     tdPhone.append(phoneLink);
-    tdDel.classList.add('delete');
+    tdDel.classList.add('delete', 'td-delete');
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
     buttonModify.insertAdjacentHTML('beforeend', `
@@ -266,6 +268,7 @@ const data = [
 
   const renderContacts = (elem, data) => {
     const allRow = data.map(createRow);
+    elem.innerHTML = '';
     elem.append(...allRow);
 
     return allRow;
@@ -294,6 +297,7 @@ const data = [
       formOverlay,
       form,
       btnDel,
+      tableHead,
     } = phoneBook;
 
     // Фукционал
@@ -326,6 +330,41 @@ const data = [
 
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
+      }
+    });
+
+    tableHead.addEventListener('click', e => {
+      const target = e.target;
+      const dataModify = [...data];
+      const columnDelete = tableHead.querySelector('.th-delete');
+
+      const sortKey = {
+        name: 'name',
+        surname: 'surname',
+      };
+
+      function compareFn(arr, key) {
+        return arr.sort((a, b) => {
+          if (a[key] < b[key]) return -1;
+          if (a[key] > b[key]) return 1;
+          return 0;
+        });
+      };
+
+      if (target.closest('.js-tHead-name')) {
+        compareFn(dataModify, sortKey.name);
+      }
+
+      if (target.closest('.js-tHead-surname')) {
+        compareFn(dataModify, sortKey.surname);
+      }
+
+      hoverRow(renderContacts(list, dataModify), logo);
+
+      if (columnDelete.classList.contains('is-visible')) {
+        list.querySelectorAll('.td-delete').forEach(del => {
+          del.classList.toggle('is-visible');
+        });
       }
     });
   };
