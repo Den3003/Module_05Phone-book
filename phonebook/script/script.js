@@ -94,8 +94,10 @@ const data = [
     thead.insertAdjacentHTML('beforeend', `
       <tr class="js-tHead-row">
         <th class="delete th-delete">Удалить</th>
-        <th class="tHead-name js-tHead-name">Имя</th>
-        <th class="tHead-surname js-tHead-surname">Фамилия</th>
+        <th class="tHead-name js-tHead-name">
+          Имя <span class="js-name-arrow"></span></th>
+        <th class="tHead-surname js-tHead-surname">Фамилия <span 
+        class="js-surname-arrow"></span></th>
         <th>Телефон</th>
         <th></th>
       </tr>
@@ -303,6 +305,7 @@ const data = [
     // Фукционал
 
     const allRow = renderContacts(list, data);
+    let toggleBoolean = true;
 
     hoverRow(allRow, logo);
 
@@ -337,26 +340,39 @@ const data = [
       const target = e.target;
       const dataModify = [...data];
       const columnDelete = tableHead.querySelector('.th-delete');
+      const arrowSpanName = tableHead.querySelector('.js-name-arrow');
+      const arrowSpanSurname = tableHead.querySelector('.js-surname-arrow');
 
       const sortKey = {
         name: 'name',
         surname: 'surname',
       };
 
+      const addArrow = (clearSpan, addArrow) => {
+        clearSpan.innerHTML = '';
+        if (toggleBoolean) {
+          addArrow.innerHTML = '&darr;';
+        } else {
+          addArrow.innerHTML = '&uarr;';
+        }
+
+        toggleBoolean = !toggleBoolean;
+      };
+
       function compareFn(arr, key) {
-        return arr.sort((a, b) => {
-          if (a[key] < b[key]) return -1;
-          if (a[key] > b[key]) return 1;
-          return 0;
-        });
+        return arr.sort((a, b) =>
+          (toggleBoolean ? a[key].localeCompare(b[key]) :
+            b[key].localeCompare(a[key])));
       };
 
       if (target.closest('.js-tHead-name')) {
         compareFn(dataModify, sortKey.name);
+        addArrow(arrowSpanSurname, arrowSpanName);
       }
 
       if (target.closest('.js-tHead-surname')) {
         compareFn(dataModify, sortKey.surname);
+        addArrow(arrowSpanName, arrowSpanSurname);
       }
 
       hoverRow(renderContacts(list, dataModify), logo);
