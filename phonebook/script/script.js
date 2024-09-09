@@ -305,7 +305,8 @@ const data = [
     // Фукционал
 
     const allRow = renderContacts(list, data);
-    let toggleBoolean = true;
+    let toggleBooleanName = true;
+    let toggleBooleanSurname = true;
 
     hoverRow(allRow, logo);
 
@@ -348,7 +349,7 @@ const data = [
         surname: 'surname',
       };
 
-      const addArrow = (clearSpan, addArrow) => {
+      function compareFn(arr, key, clearSpan, addArrow, toggleBoolean) {
         clearSpan.innerHTML = '';
         if (toggleBoolean) {
           addArrow.innerHTML = '&darr;';
@@ -356,23 +357,33 @@ const data = [
           addArrow.innerHTML = '&uarr;';
         }
 
-        toggleBoolean = !toggleBoolean;
-      };
-
-      function compareFn(arr, key) {
         return arr.sort((a, b) =>
           (toggleBoolean ? a[key].localeCompare(b[key]) :
             b[key].localeCompare(a[key])));
       };
 
       if (target.closest('.js-tHead-name')) {
-        compareFn(dataModify, sortKey.name);
-        addArrow(arrowSpanSurname, arrowSpanName);
+        compareFn(
+            dataModify,
+            sortKey.name,
+            arrowSpanSurname,
+            arrowSpanName,
+            toggleBooleanName,
+        );
+        toggleBooleanName = !toggleBooleanName;
+        toggleBooleanSurname = true;
       }
 
       if (target.closest('.js-tHead-surname')) {
-        compareFn(dataModify, sortKey.surname);
-        addArrow(arrowSpanName, arrowSpanSurname);
+        compareFn(
+            dataModify,
+            sortKey.surname,
+            arrowSpanName,
+            arrowSpanSurname,
+            toggleBooleanSurname,
+        );
+        toggleBooleanSurname = !toggleBooleanSurname;
+        toggleBooleanName = true;
       }
 
       hoverRow(renderContacts(list, dataModify), logo);
