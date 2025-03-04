@@ -1,32 +1,32 @@
 'use strict';
 
-const data = [
-  {
-    name: 'Иван',
-    surname: 'Петров',
-    phone: '+79514545454',
-  },
-  {
-    name: 'Игорь',
-    surname: 'Семёнов',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Семён',
-    surname: 'Иванов',
-    phone: '+79800252525',
-  },
-  {
-    name: 'Мария',
-    surname: 'Попова',
-    phone: '+79876543210',
-  },
-];
 
 {
-  const addContactData = contact => {
-    data.push(contact);
-    console.log('data: ', data);
+  const keyLocalStorage = 'phoneBook';
+
+  const getStorage = (key) => {
+    let storageArray = [];
+
+    if (localStorage.getItem(key)) {
+      storageArray = JSON.parse(localStorage.getItem(key));
+    } else {
+      return storageArray;
+    }
+
+    return storageArray;
+  };
+
+  const setStorage = (key, obj) => {
+    const receivedArray = getStorage(key);
+    receivedArray.push(obj);
+    localStorage.setItem(key, JSON.stringify(receivedArray));
+  };
+
+  const removeStorage = (tel) => {
+    const modifyArray = getStorage(keyLocalStorage).filter(obj =>
+      obj.phone !== tel);
+    localStorage.removeItem(keyLocalStorage);
+    localStorage.setItem(keyLocalStorage, JSON.stringify(modifyArray));
   };
 
   const createContainer = () => {
@@ -231,6 +231,7 @@ const data = [
     const buttonModify = document.createElement('button');
 
     tr.classList.add('contact');
+    tr.setAttribute('data-telNumber', phone);
     tdName.textContent = firstName;
     tdSurname.textContent = surname;
     phoneLink.href = `tel:${phone}`;
@@ -297,6 +298,11 @@ const data = [
   const modalControl = (btnAdd, formOverlay) => {
     const openModal = () => {
       formOverlay.classList.add('is-visible');
+      document.querySelectorAll('.delete').forEach(del => {
+        if (del.classList.contains('is-visible')) {
+          del.classList.remove('is-visible');
+        }
+      });
     };
 
     const closeModal = () => {
@@ -328,9 +334,9 @@ const data = [
 
     list.addEventListener('click', e => {
       const target = e.target;
-
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
+        removeStorage(target.closest('.contact').dataset.telnumber);
       }
     });
   };
@@ -346,7 +352,7 @@ const data = [
       const newContact = Object.fromEntries(formData);
 
       addContactPage(newContact, list);
-      addContactData(newContact);
+      setStorage(keyLocalStorage, newContact);
       form.reset();
       closeModal();
     });
@@ -366,7 +372,7 @@ const data = [
 
     // Фукционал
 
-    const allRow = renderContacts(list, data);
+    const allRow = renderContacts(list, getStorage(keyLocalStorage));
     let toggleBooleanName = true;
     let toggleBooleanSurname = true;
     const {closeModal} = modalControl(btnAdd, formOverlay);
@@ -376,7 +382,7 @@ const data = [
 
     tableHead.addEventListener('click', e => {
       const target = e.target;
-      const dataModify = [...data];
+      const dataModify = [...getStorage(keyLocalStorage)];
       const columnDelete = tableHead.querySelector('.th-delete');
       const arrowSpanName = tableHead.querySelector('.js-name-arrow');
       const arrowSpanSurname = tableHead.querySelector('.js-surname-arrow');
