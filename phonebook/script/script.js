@@ -430,6 +430,7 @@
       }
 
       hoverRow(renderContacts(list, dataModify), logo);
+      localStorage.setItem(keyLocalStorage, JSON.stringify(dataModify));
 
       if (columnDelete.classList.contains('is-visible')) {
         list.querySelectorAll('.td-delete').forEach(del => {
