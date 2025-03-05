@@ -2,31 +2,19 @@
 
 
 {
-  const keyLocalStorage = 'phoneBook';
-
-  const getStorage = (key) => {
-    let storageArray = [];
-
-    if (localStorage.getItem(key)) {
-      storageArray = JSON.parse(localStorage.getItem(key));
-    } else {
-      return storageArray;
-    }
-
-    return storageArray;
-  };
+  const getStorage = () => (localStorage.getItem('phoneBook') ?
+    JSON.parse(localStorage.getItem('phoneBook')) : []);
 
   const setStorage = (key, obj) => {
-    const receivedArray = getStorage(key);
+    const receivedArray = getStorage();
     receivedArray.push(obj);
     localStorage.setItem(key, JSON.stringify(receivedArray));
   };
 
   const removeStorage = (tel) => {
-    const modifyArray = getStorage(keyLocalStorage).filter(obj =>
+    const modifyArray = getStorage().filter(obj =>
       obj.phone !== tel);
-    localStorage.removeItem(keyLocalStorage);
-    localStorage.setItem(keyLocalStorage, JSON.stringify(modifyArray));
+    localStorage.setItem('phoneBook', JSON.stringify(modifyArray));
   };
 
   const createContainer = () => {
@@ -352,7 +340,7 @@
       const newContact = Object.fromEntries(formData);
 
       addContactPage(newContact, list);
-      setStorage(keyLocalStorage, newContact);
+      setStorage('phoneBook', newContact);
       form.reset();
       closeModal();
     });
@@ -372,7 +360,7 @@
 
     // Фукционал
 
-    const allRow = renderContacts(list, getStorage(keyLocalStorage));
+    const allRow = renderContacts(list, getStorage());
     let toggleBooleanName = true;
     let toggleBooleanSurname = true;
     const {closeModal} = modalControl(btnAdd, formOverlay);
@@ -382,7 +370,7 @@
 
     tableHead.addEventListener('click', e => {
       const target = e.target;
-      const dataModify = [...getStorage(keyLocalStorage)];
+      const dataModify = [...getStorage()];
       const columnDelete = tableHead.querySelector('.th-delete');
       const arrowSpanName = tableHead.querySelector('.js-name-arrow');
       const arrowSpanSurname = tableHead.querySelector('.js-surname-arrow');
@@ -430,7 +418,7 @@
       }
 
       hoverRow(renderContacts(list, dataModify), logo);
-      localStorage.setItem(keyLocalStorage, JSON.stringify(dataModify));
+      localStorage.setItem('phoneBook', JSON.stringify(dataModify));
 
       if (columnDelete.classList.contains('is-visible')) {
         list.querySelectorAll('.td-delete').forEach(del => {
