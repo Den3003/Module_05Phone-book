@@ -25,6 +25,7 @@ export default [...compat.extends("eslint:recommended"), {
 
         parserOptions: {
             parser: "babel-eslint",
+            sourceType: module,
         },
     },
     plugins: {
