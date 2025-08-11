@@ -1,4 +1,5 @@
-import { createHeader,
+import { 
+    createHeader,
     createLogo,
     createMain,
     createButtonsGroup,

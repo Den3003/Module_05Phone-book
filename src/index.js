@@ -1,6 +1,12 @@
-import { getStorage } from './modules/serviceStorage.js';
-import * as renders from './modules/render.js';
-import controls from './modules/control.js';
+import { getStorage } from './script/serviceStorage.js';
+import * as renders from './script/render.js';
+import controls from './script/control.js';
+
+// import './css/normalize.css';
+// import './css/bootstrap.css';
+// import './css/style.css';
+import './index.html'
+import './scss/index.scss';
 
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
